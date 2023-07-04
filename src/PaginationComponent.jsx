@@ -6,23 +6,19 @@ const PaginationComponent = ({
     currentPage,
     totalPages,
     onPageChange,
-    startPage,
-    endPage,
+    pageSize,
 }) => {
-    const handleClick = (pageNumber) => {
-        if (pageNumber !== currentPage) {
-            onPageChange(pageNumber);
-        }
-    };
-
     const renderPaginationItems = () => {
         const paginationItems = [];
+
+        const startPage = Math.max(1, currentPage - 4);
+        const endPage = Math.min(startPage + 9, totalPages);
 
         paginationItems.push(
             <Pagination.First
                 key="first"
                 disabled={currentPage === 1}
-                onClick={() => handleClick(1)}
+                onClick={() => onPageChange(1)}
             />,
         );
 
@@ -30,18 +26,18 @@ const PaginationComponent = ({
             <Pagination.Prev
                 key="prev"
                 disabled={currentPage === 1}
-                onClick={() => handleClick(currentPage - 1)}
+                onClick={() => onPageChange(currentPage - 1)}
             />,
         );
 
-        for (let i = startPage; i <= endPage; i++) {
+        for (let page = startPage; page <= endPage; page++) {
             paginationItems.push(
                 <Pagination.Item
-                    key={i}
-                    active={i === currentPage}
-                    onClick={() => handleClick(i)}
+                    key={page}
+                    active={page === currentPage}
+                    onClick={() => onPageChange(page)}
                 >
-                    {i}
+                    {page}
                 </Pagination.Item>,
             );
         }
@@ -50,7 +46,7 @@ const PaginationComponent = ({
             <Pagination.Next
                 key="next"
                 disabled={currentPage === totalPages}
-                onClick={() => handleClick(currentPage + 1)}
+                onClick={() => onPageChange(currentPage + 1)}
             />,
         );
 
@@ -58,7 +54,7 @@ const PaginationComponent = ({
             <Pagination.Last
                 key="last"
                 disabled={currentPage === totalPages}
-                onClick={() => handleClick(totalPages)}
+                onClick={() => onPageChange(totalPages)}
             />,
         );
 
@@ -72,8 +68,7 @@ PaginationComponent.propTypes = {
     currentPage: PropTypes.number.isRequired,
     totalPages: PropTypes.number.isRequired,
     onPageChange: PropTypes.func.isRequired,
-    startPage: PropTypes.number.isRequired,
-    endPage: PropTypes.number.isRequired,
+    pageSize: PropTypes.number.isRequired,
 };
 
 export default PaginationComponent;

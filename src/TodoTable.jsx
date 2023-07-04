@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import TodoTableRow from './TodoTableRow';
 import PaginationComponent from './PaginationComponent';
@@ -6,16 +6,15 @@ import usePagination from './usePagination';
 
 const TodoTable = ({ todos }) => {
     const itemsPerPage = 2;
+    const pageSize = 2;
 
-    const { currentPage, totalPages, handlePageChange, getPaginationRange } =
-        usePagination(todos.length, itemsPerPage);
+    const [currentPage, setCurrentPage] = useState(1);
 
-    const { startPage, endPage } = getPaginationRange();
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
 
-    const slicedTodos = todos.slice(
-        (currentPage - 1) * itemsPerPage,
-        currentPage * itemsPerPage,
-    );
+    const slicedTodos = usePagination(todos, currentPage, itemsPerPage);
 
     return (
         <div>
@@ -36,10 +35,9 @@ const TodoTable = ({ todos }) => {
             </table>
             <PaginationComponent
                 currentPage={currentPage}
-                totalPages={totalPages}
+                totalPages={Math.ceil(todos.length / pageSize)}
                 onPageChange={handlePageChange}
-                startPage={startPage}
-                endPage={endPage}
+                pageSize={pageSize}
             />
         </div>
     );
