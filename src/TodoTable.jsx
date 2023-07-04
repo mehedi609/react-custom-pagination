@@ -1,20 +1,25 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import TodoTableRow from './TodoTableRow';
-import PaginationComponent from './PaginationComponent';
-import usePagination from './usePagination';
+import CustomPagination from './CustomPagination';
+import { usePagination } from './custom-hooks/usePagination';
+// import usePagination from './usePagination';
 
-const TodoTable = ({ todos }) => {
-    const itemsPerPage = 2;
-    const pageSize = 2;
-
+const TodoTable = ({ todos, pageSize = 10 }) => {
     const [currentPage, setCurrentPage] = useState(1);
 
-    const handlePageChange = (page) => {
-        setCurrentPage(page);
-    };
+    // const currentTableData = useMemo(() => {
+    //     const firstPageIndex = (currentPage - 1) * pageSize;
+    //     const lastPageIndex = firstPageIndex + pageSize;
+    //     return todos.slice(firstPageIndex, lastPageIndex);
+    // }, [currentPage, todos, pageSize]);
 
-    const slicedTodos = usePagination(todos, currentPage, itemsPerPage);
+    const { currentTableData } = usePagination({
+        totalCount: todos.length,
+        pageSize,
+        currentPage,
+        data: todos,
+    });
 
     return (
         <div>
@@ -28,16 +33,16 @@ const TodoTable = ({ todos }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {slicedTodos.map((todo) => (
+                    {currentTableData.map((todo) => (
                         <TodoTableRow key={todo.id} item={todo} />
                     ))}
                 </tbody>
             </table>
-            <PaginationComponent
+            <CustomPagination
                 currentPage={currentPage}
-                totalPages={Math.ceil(todos.length / pageSize)}
-                onPageChange={handlePageChange}
+                totalCount={todos.length}
                 pageSize={pageSize}
+                onPageChange={(page) => setCurrentPage(page)}
             />
         </div>
     );
