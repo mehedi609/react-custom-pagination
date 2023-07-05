@@ -13,13 +13,14 @@ const TodoTableRow = ({ item }) => {
     );
 };
 
-// TodoTableRow.propTypes = {
-//     item: PropTypes.shape({
-//         id: PropTypes.number.isRequired,
-//         todo: PropTypes.string.isRequired,
-//         completed: PropTypes.bool.isRequired,
-//         userId: PropTypes.number.isRequired,
-//     }).isRequired,
-// };
+TodoTableRow.propTypes = {
+    item: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        first_name: PropTypes.string.isRequired,
+        last_name: PropTypes.string.isRequired,
+        email: PropTypes.string.isRequired,
+        phone: PropTypes.string.isRequired,
+    }).isRequired,
+};
 
 export default TodoTableRow;
