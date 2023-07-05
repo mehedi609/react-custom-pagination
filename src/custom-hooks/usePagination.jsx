@@ -1,6 +1,9 @@
+import React from 'react';
 import { useMemo } from 'react';
 
 export const DOTS = '...';
+export const RDOTS = 'RDOTS';
+export const LDOTS = 'LDOTS';
 
 const range = (start, end) => {
     let length = end - start + 1;
@@ -10,9 +13,8 @@ const range = (start, end) => {
 export const usePagination = ({
     totalCount,
     pageSize,
-    currentPage,
-    data = [],
     siblingCount = 1,
+    currentPage,
 }) => {
     const paginationRange = useMemo(() => {
         const totalPageCount = Math.ceil(totalCount / pageSize);
@@ -49,7 +51,7 @@ export const usePagination = ({
             let leftItemCount = 3 + 2 * siblingCount;
             let leftRange = range(1, leftItemCount);
 
-            return [...leftRange, DOTS, totalPageCount];
+            return [...leftRange, RDOTS, totalPageCount];
         }
 
         if (shouldShowLeftDots && !shouldShowRightDots) {
@@ -58,20 +60,20 @@ export const usePagination = ({
                 totalPageCount - rightItemCount + 1,
                 totalPageCount,
             );
-            return [firstPageIndex, DOTS, ...rightRange];
+            return [firstPageIndex, LDOTS, ...rightRange];
         }
 
         if (shouldShowLeftDots && shouldShowRightDots) {
             let middleRange = range(leftSiblingIndex, rightSiblingIndex);
-            return [firstPageIndex, DOTS, ...middleRange, DOTS, lastPageIndex];
+            return [
+                firstPageIndex,
+                LDOTS,
+                ...middleRange,
+                RDOTS,
+                lastPageIndex,
+            ];
         }
     }, [totalCount, pageSize, siblingCount, currentPage]);
 
-    const currentTableData = useMemo(() => {
-        const firstPageIndex = (currentPage - 1) * pageSize;
-        const lastPageIndex = firstPageIndex + pageSize;
-        return data.slice(firstPageIndex, lastPageIndex);
-    }, [currentPage, data, pageSize]);
-
-    return { paginationRange, currentTableData };
+    return paginationRange;
 };
