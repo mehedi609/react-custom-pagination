@@ -2,14 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const TodoTableRow = ({ item }) => {
-    const { id, todo, completed, userId } = item;
-
     return (
         <tr>
-            <td>{id}</td>
-            <td>{todo}</td>
-            <td>{completed ? 'Yes' : 'No'}</td>
-            <td>{userId}</td>
+            <td>{item.id}</td>
+            <td>{item.first_name}</td>
+            <td>{item.last_name}</td>
+            <td>{item.email}</td>
+            <td>{item.phone}</td>
         </tr>
     );
 };

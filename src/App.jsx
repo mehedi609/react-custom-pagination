@@ -8,7 +8,7 @@ const App = () => {
     return (
         <div>
             <h1>Todo List</h1>
-            <TodoTable todos={todosData.todos} pageSize={5} />
+            <TodoTable todos={todosData} pageSize={5} />
         </div>
     );
 };
