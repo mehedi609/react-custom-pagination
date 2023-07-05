@@ -1,7 +1,5 @@
-import React from 'react';
 import { useMemo } from 'react';
 
-export const DOTS = '...';
 export const RDOTS = 'RDOTS';
 export const LDOTS = 'LDOTS';
 
@@ -13,8 +11,9 @@ const range = (start, end) => {
 export const usePagination = ({
     totalCount,
     pageSize,
-    siblingCount = 1,
     currentPage,
+    data = [],
+    siblingCount = 1,
 }) => {
     const paginationRange = useMemo(() => {
         const totalPageCount = Math.ceil(totalCount / pageSize);
@@ -75,5 +74,11 @@ export const usePagination = ({
         }
     }, [totalCount, pageSize, siblingCount, currentPage]);
 
-    return paginationRange;
+    const currentTableData = useMemo(() => {
+        const firstPageIndex = (currentPage - 1) * pageSize;
+        const lastPageIndex = firstPageIndex + pageSize;
+        return data.slice(firstPageIndex, lastPageIndex);
+    }, [currentPage, data, pageSize]);
+
+    return { paginationRange, currentTableData };
 };

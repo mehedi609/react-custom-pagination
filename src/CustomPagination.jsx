@@ -1,13 +1,8 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
-// import classnames from 'classnames';
+import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import { Pagination } from 'react-bootstrap';
-import {
-    usePagination,
-    DOTS,
-    LDOTS,
-    RDOTS,
-} from './custom-hooks/usePagination';
+import { usePagination, LDOTS, RDOTS } from './custom-hooks/usePagination';
 
 const CustomPagination = ({
     onPageChange,
@@ -16,7 +11,7 @@ const CustomPagination = ({
     currentPage,
     pageSize,
 }) => {
-    const paginationRange = usePagination({
+    const { paginationRange } = usePagination({
         currentPage,
         totalCount,
         siblingCount,
@@ -27,24 +22,25 @@ const CustomPagination = ({
         return null;
     }
 
-    const onNext = () => {
-        onPageChange(currentPage + 1);
-    };
-
-    const onPrevious = () => {
-        onPageChange(currentPage - 1);
+    const handlePageChange = (page) => {
+        onPageChange(page);
     };
 
     let lastPage = paginationRange[paginationRange.length - 1];
 
     return (
-        <Pagination className="pagination-bar">
+        <Pagination
+            className={classNames(
+                'justify-content-center',
+                'align-items-center',
+            )}
+        >
             <Pagination.Prev
                 disabled={currentPage === 1}
-                onClick={onPrevious}
+                onClick={() => handlePageChange(currentPage - 1)}
             />
             {paginationRange.map((pageNumber) => {
-                if (pageNumber === LDOTS || pageNumber === RDOTS) {
+                if (pageNumber === RDOTS || pageNumber === LDOTS) {
                     return <Pagination.Ellipsis key={pageNumber} disabled />;
                 }
 
@@ -52,7 +48,7 @@ const CustomPagination = ({
                     <Pagination.Item
                         key={pageNumber}
                         active={pageNumber === currentPage}
-                        onClick={() => onPageChange(pageNumber)}
+                        onClick={() => handlePageChange(pageNumber)}
                     >
                         {pageNumber}
                     </Pagination.Item>
@@ -60,18 +56,18 @@ const CustomPagination = ({
             })}
             <Pagination.Next
                 disabled={currentPage === lastPage}
-                onClick={onNext}
+                onClick={() => handlePageChange(currentPage + 1)}
             />
         </Pagination>
     );
 };
 
-// CustomPagination.propTypes = {
-//     onPageChange: PropTypes.func.isRequired,
-//     totalCount: PropTypes.number.isRequired,
-//     siblingCount: PropTypes.number,
-//     currentPage: PropTypes.number.isRequired,
-//     pageSize: PropTypes.number.isRequired,
-// };
+CustomPagination.propTypes = {
+    onPageChange: PropTypes.func.isRequired,
+    totalCount: PropTypes.number.isRequired,
+    siblingCount: PropTypes.number,
+    currentPage: PropTypes.number.isRequired,
+    pageSize: PropTypes.number.isRequired,
+};
 
 export default CustomPagination;
