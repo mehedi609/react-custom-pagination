@@ -20,9 +20,10 @@ const TodoTable = ({ todos, pageSize = 10 }) => {
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Todo</th>
-                        <th>Completed</th>
-                        <th>User ID</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -35,7 +36,7 @@ const TodoTable = ({ todos, pageSize = 10 }) => {
                 currentPage={currentPage}
                 totalCount={todos.length}
                 pageSize={pageSize}
-                siblingCount={7}
+                siblingCount={10}
                 onPageChange={(page) => setCurrentPage(page)}
             />
         </div>
