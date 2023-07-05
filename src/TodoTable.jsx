@@ -1,32 +1,18 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import TodoTableRow from './TodoTableRow';
 import CustomPagination from './CustomPagination';
-// import { usePagination } from './custom-hooks/usePagination';
-// import usePagination from './usePagination';
-import data from './data.json';
-let PageSize = 10;
-const TodoTable = ({ todos }) => {
+import { usePagination } from './custom-hooks/usePagination';
+
+const TodoTable = ({ todos, pageSize = 10 }) => {
     const [currentPage, setCurrentPage] = useState(1);
 
-    // const currentTableData = useMemo(() => {
-    //     const firstPageIndex = (currentPage - 1) * pageSize;
-    //     const lastPageIndex = firstPageIndex + pageSize;
-    //     return todos.slice(firstPageIndex, lastPageIndex);
-    // }, [currentPage, todos, pageSize]);
-
-    // const { currentTableData } = usePagination({
-    //     totalCount: todos.length,
-    //     pageSize,
-    //     currentPage,
-    //     data: todos,
-    // });
-
-    const currentTableData = useMemo(() => {
-        const firstPageIndex = (currentPage - 1) * PageSize;
-        const lastPageIndex = firstPageIndex + PageSize;
-        return data.slice(firstPageIndex, lastPageIndex);
-    }, [currentPage]);
+    const { currentTableData } = usePagination({
+        totalCount: todos.length,
+        pageSize,
+        currentPage,
+        data: todos,
+    });
 
     return (
         <div>
@@ -34,10 +20,9 @@ const TodoTable = ({ todos }) => {
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>FIRST NAME</th>
-                        <th>LAST NAME</th>
-                        <th>EMAIL</th>
-                        <th>PHONE</th>
+                        <th>Todo</th>
+                        <th>Completed</th>
+                        <th>User ID</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -48,17 +33,17 @@ const TodoTable = ({ todos }) => {
             </table>
             <CustomPagination
                 currentPage={currentPage}
-                totalCount={data.length}
-                pageSize={PageSize}
-                siblingCount={6}
+                totalCount={todos.length}
+                pageSize={pageSize}
+                siblingCount={7}
                 onPageChange={(page) => setCurrentPage(page)}
             />
         </div>
     );
 };
 
-// TodoTable.propTypes = {
-//     todos: PropTypes.array.isRequired,
-// };
+TodoTable.propTypes = {
+    todos: PropTypes.array.isRequired,
+};
 
 export default TodoTable;
