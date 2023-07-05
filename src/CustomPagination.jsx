@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Pagination } from 'react-bootstrap';
-import { usePagination, DOTS } from './custom-hooks/usePagination';
+import { usePagination, LDOTS, RDOTS } from './custom-hooks/usePagination';
 
 const CustomPagination = ({
     onPageChange,
@@ -40,8 +40,8 @@ const CustomPagination = ({
                 onClick={() => handlePageChange(currentPage - 1)}
             />
             {paginationRange.map((pageNumber) => {
-                if (pageNumber === DOTS) {
-                    return <Pagination.Ellipsis key={pageNumber} />;
+                if (pageNumber === RDOTS || pageNumber === LDOTS) {
+                    return <Pagination.Ellipsis key={pageNumber} disabled />;
                 }
 
                 return (
